@@ -7,23 +7,34 @@
 using namespace std;
 class Solution {
 public:
-    string longestCommonPrefix(vector<string>& strs) {
-        if(strs.size()==0) return "";
-        string s=strs.back();
-        strs.pop_back();
-        int i=0;
-        for(;i<s.length();++i){
-            for(string j:strs){
-                if(i>=j.length()||j[i]!=s[i]) return s.substr(0,i);
+    vector<string> res;
+    void f(vector<string> &s,int i,string tmp){
+        if(i>=s.size()){
+            res.push_back(tmp);
+            return;
+        }
+        for(char j:s[i]){
+            tmp.push_back(j);
+            f(s,i+1,tmp);
+            tmp.pop_back();
+        }
+    }
+    vector<string> letterCombinations(string digits) {
+        string telephone[10]={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        if(digits=="") return res;
+        vector<string> s;
+        for(char i:digits){
+            if(i!=0x30&&i!=0x31){
+                s.push_back(telephone[i-0x30]);
             }
         }
-        if(i==s.length()) return s;
-        return "";
+        f(s,0,string());
+        return res;
     }
 };
 int main(int argc, char *argv[]){
-    vector<string> s{"c","c"};
+    string s="23";
     Solution a;
-    string res=a.longestCommonPrefix(s);
+    a.letterCombinations(s);
     return 0;
 }
